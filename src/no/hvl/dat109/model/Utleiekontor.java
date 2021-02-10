@@ -1,6 +1,8 @@
 package no.hvl.dat109.model;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Utleiekontor {
 
@@ -12,6 +14,7 @@ public class Utleiekontor {
 
     private static int idCount = 0;
 
+    public Utleiekontor() {}
 
     /**
      * Nytt utleiekontor med liste av biler
@@ -32,6 +35,23 @@ public class Utleiekontor {
     }
 
     /**
+     * Nytt utleiekontor med liste av biler
+     * @param - kontorid
+     * @param - adresse
+     * @param - telefonnummer
+     * @param - biler
+     * @param - reservasjoner
+     * 
+     * @author - Rune, Simen
+     */
+    public Utleiekontor (Adresse adresse, int telefonnummer, List<Bil> biler) {
+        this.kontorid = ++idCount;
+        this.adresse = adresse;
+        this.telefonnummer = telefonnummer;
+        this.biler = biler;
+    }
+
+    /**
      * Lager en reservasjon og legger til i system.
      */
     public boolean leggTilReservasjon(Reservasjon reservasjon){
@@ -47,9 +67,9 @@ public class Utleiekontor {
      * @param - reservasjon
      */
     public void returnereBilTilKontor(Reservasjon reservasjon) {
-        //TODO 
-        reservasjon.getBil().fjernReservasjon(reservasjon);
-        reservasjon.getKunde().fjernReservasjon();
+        reservasjoner = reservasjoner.stream()
+            .filter(r -> r.getReservasjonId() != reservasjon.getReservasjonId())
+            .collect(Collectors.toList());
     }
 
 
@@ -58,7 +78,6 @@ public class Utleiekontor {
      */
     public String leieKvittering() {
         String leier = "Du leier bil";
-        //TODO
         return leier;
     }
 
@@ -67,17 +86,19 @@ public class Utleiekontor {
      */
     public String returnerKvittering() {
         String returnert = "Du har levert bil";
-        //TODO
         return returnert;
     }
 
     /**
      * Leter etter en bil. 
-     * Bør kanskje ha et søkeparameter = modell?
+     * @return - ledigeBilerFraValgtGruppe 
      */
-    public Bil sokEtterBil() {
-        //TODO
-        return null;
+    public List<Bil> sokEtterBil(Utleiegruppe utleiegruppe, LocalDateTime startUtleie, LocalDateTime sluttUtleie) {
+        List<Bil> ledigeBilerFraValgtGruppe = biler.stream()
+                                                   .filter(b -> b.getUtleiegruppe() == utleiegruppe) 
+                                                   .filter(b -> b.erLedig(startUtleie, sluttUtleie))
+                                                   .collect(Collectors.toList());
+        return ledigeBilerFraValgtGruppe;
     }
 
     public int getKontorid() {
@@ -120,5 +141,9 @@ public class Utleiekontor {
         this.reservasjoner = reservasjoner;
     }
 
+    @Override
+    public String toString() {
+        return "" + kontorid + " - " + adresse.toString() + " - " + telefonnummer;
+    }
 
 }

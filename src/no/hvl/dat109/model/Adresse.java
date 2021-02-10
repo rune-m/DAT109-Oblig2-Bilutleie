@@ -44,4 +44,9 @@ public class Adresse {
 		this.poststed = poststed;
 	}
 
+	@Override
+	public String toString() {
+		return "" + gateadresse + ", " + postnummer + ", " + poststed;
+	}
+
 }

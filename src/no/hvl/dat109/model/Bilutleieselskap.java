@@ -1,5 +1,7 @@
 package no.hvl.dat109.model;
 
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class Bilutleieselskap {
@@ -24,6 +26,23 @@ public class Bilutleieselskap {
 		this.telefonnummer = telefonnummer;
 		this.adresse = adresse;
 		this.kontorer = kontorer;
+		kunder = new ArrayList<>();
+	}
+
+	/**
+	 * Nytt bilutleieselskap
+	 * 
+	 * @param - navn
+	 * @param - telefonnummer
+	 * @param - adresse
+	 * @author - Rune, Simen
+	 */
+	public Bilutleieselskap(String navn, int telefonnummer, Adresse adresse) {
+		this.navn = navn;
+		this.telefonnummer = telefonnummer;
+		this.adresse = adresse;
+		kontorer = new ArrayList<>();
+		kunder = new ArrayList<>();
 	}
 
 	public void leggTilKontor(Utleiekontor utleiekontor) {

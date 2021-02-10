@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 public class Reservasjon {
 
 	private int reservasjonId;
-	private int kredittkortNr;
+	private String kredittkortNr;
 	private LocalDateTime startUtleie;
 	private LocalDateTime sluttUtleie;
 	private Kunde kunde;
@@ -13,7 +13,7 @@ public class Reservasjon {
   
   private static int idCount = 0;
 
-	public Reservasjon(int kredittkortNr, LocalDateTime startUtleie,
+	public Reservasjon(String kredittkortNr, LocalDateTime startUtleie,
 			LocalDateTime sluttUtleie, Kunde kunde, Bil bil) {
 		this.reservasjonId = ++idCount;
 		this.kredittkortNr = kredittkortNr;
@@ -31,11 +31,11 @@ public class Reservasjon {
 		this.reservasjonId = reservasjonId;
 	}
 
-	public int getKredittkortNr() {
+	public String getKredittkortNr() {
 		return kredittkortNr;
 	}
 
-	public void setKredittkortNr(int kredittkortNr) {
+	public void setKredittkortNr(String kredittkortNr) {
 		this.kredittkortNr = kredittkortNr;
 	}
 
@@ -70,5 +70,13 @@ public class Reservasjon {
 	public void setBil(Bil bil) {
 		this.bil = bil;
 	}
+
+	@Override
+	public String toString() {
+		return "Reservasjon [bil=" + bil + ", kredittkortNr=" + kredittkortNr + ", kunde=" + kunde + ", reservasjonId="
+				+ reservasjonId + ", sluttUtleie=" + sluttUtleie + ", startUtleie=" + startUtleie + "]";
+	}
+
+	
 
 }
