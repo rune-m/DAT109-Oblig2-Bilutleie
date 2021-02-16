@@ -1,13 +1,11 @@
 package no.hvl.dat109.tests.model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.*;
 
 import java.time.temporal.*;
 
-import no.hvl.dat109.controller.Controller;
+// import no.hvl.dat109.controller.Controller;
 import no.hvl.dat109.model.*;
 import no.hvl.dat109.utils.Utility;
 
@@ -15,7 +13,7 @@ public class ReservasjonTest {
 
     private Bil bil;
     private Reservasjon reservasjon1;
-    private Controller controller = new Controller();
+    // private Controller controller = new Controller();
     private static final int prisLiten = 350;
     private static final int prisMedium = 500;
     private static final int prisStor = 750;

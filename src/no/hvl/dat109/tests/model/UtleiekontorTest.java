@@ -1,19 +1,18 @@
 package no.hvl.dat109.tests.model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.*;
 import java.util.List;
 import java.util.ArrayList;
 
-import no.hvl.dat109.controller.Controller;
+// import no.hvl.dat109.controller.Controller;
 import no.hvl.dat109.model.*;
 import no.hvl.dat109.utils.Utility;
 
 public class UtleiekontorTest {
 
-	private Controller controller = new Controller();
+	// private Controller controller = new Controller();
 
 	private Utleiekontor kontor = new Utleiekontor();
 	private Bil bil1 = new Bil("ST12345", "Audi", "modell", "Svart", 12345, Utleiegruppe.MEDIUM);

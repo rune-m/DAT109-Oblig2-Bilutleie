@@ -14,7 +14,7 @@ import org.junit.jupiter.api.*;
 import no.hvl.dat109.controller.Controller;
 import no.hvl.dat109.model.Adresse;
 import no.hvl.dat109.model.Bil;
-import no.hvl.dat109.model.Bilutleieselskap;
+// import no.hvl.dat109.model.Bilutleieselskap;
 import no.hvl.dat109.model.Kunde;
 import no.hvl.dat109.model.Reservasjon;
 import no.hvl.dat109.model.Utleiegruppe;
@@ -31,7 +31,7 @@ public class ControllerTest {
 
   @BeforeEach
   public void oppsett() {
-    Bilutleieselskap bilutleieselskap = new Bilutleieselskap("SR Biler", 12345678, new Adresse("Bilgaten 10", 5018, "Bergen"));
+    // Bilutleieselskap bilutleieselskap = new Bilutleieselskap("SR Biler", 12345678, new Adresse("Bilgaten 10", 5018, "Bergen"));
     
     ford = new Bil("AB 11111", "Ford", "Focus", "Blå", 100_000, Utleiegruppe.MEDIUM);
     List<Bil> biler = new ArrayList<>();
@@ -40,8 +40,9 @@ public class ControllerTest {
     kontor = new Utleiekontor(new Adresse("Utleiegaten 50", 5075, "Fantoft"), 98010905, biler);
     kunde = new Kunde("Simen", "Mathisen", new Adresse("Flåteskjærveien", 3045, "Tjøme"), 45423999);
 
-    controller.leieBil(kontor, ford, kunde, Utility.parseDato("01.01.2021"), Utility.parseDato("02.01.2021"), "123");
-
+    Reservasjon r = controller.leieBil(kontor, ford, kunde, Utility.parseDato("01.01.2021"), Utility.parseDato("02.01.2021"), "123");
+    System.out.println("asd" + r);
+    
   }
 
   @Test
@@ -65,15 +66,15 @@ public class ControllerTest {
 
   @Test
   public void returnereBil() {
-    int reservasjonId = 1;
 
-    Reservasjon reservasjon = kontor.getReservasjoner().stream().filter(r -> r.getReservasjonId() == reservasjonId).findAny().orElse(null);
-
-    controller.returnerBil(reservasjonId, kontor);
+    Reservasjon reservasjon = kontor.getReservasjoner().get(0);
+    
+    controller.returnerBil(reservasjon.getReservasjonId(), kontor);
 
     assertFalse(kontor.getReservasjoner().contains(reservasjon));
     assertFalse(ford.getReservasjoner().contains(reservasjon));
     assertTrue(kunde.getReservasjon() == null);
+    
 
   }
   

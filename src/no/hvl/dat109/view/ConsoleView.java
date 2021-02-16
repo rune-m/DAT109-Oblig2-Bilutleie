@@ -181,6 +181,7 @@ public class ConsoleView {
 
       if (kontor.getBiler().stream().map(b -> b.getUtleiegruppe()).collect(Collectors.toList()).contains(utleiegruppe)) {
         funnet = true;
+        System.out.println("Fant bil på kontor");
       } else {
         System.out.println("\nDet finnes ingen biler av typen '" + Utility.enumToString(utleiegruppe) + "' på kontoret '" + kontor.getAdresse().toString() + "'.");
       }
