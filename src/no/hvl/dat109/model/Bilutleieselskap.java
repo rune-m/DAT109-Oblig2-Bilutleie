@@ -4,6 +4,11 @@ package no.hvl.dat109.model;
 import java.util.ArrayList;
 import java.util.List;
 
+
+/**
+ * Klasse Bilutleieselskap
+ * @author - Rune, Simen
+ */
 public class Bilutleieselskap {
 
 	private String navn;
@@ -19,7 +24,6 @@ public class Bilutleieselskap {
 	 * @param - telefonnummer
 	 * @param - adresse
 	 * @param - kontorer
-	 * @author - Rune, Simen
 	 */
 	public Bilutleieselskap(String navn, int telefonnummer, Adresse adresse, List<Utleiekontor> kontorer) {
 		this.navn = navn;
@@ -35,7 +39,6 @@ public class Bilutleieselskap {
 	 * @param - navn
 	 * @param - telefonnummer
 	 * @param - adresse
-	 * @author - Rune, Simen
 	 */
 	public Bilutleieselskap(String navn, int telefonnummer, Adresse adresse) {
 		this.navn = navn;

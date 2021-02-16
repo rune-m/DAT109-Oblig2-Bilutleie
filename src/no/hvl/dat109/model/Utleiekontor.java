@@ -1,9 +1,14 @@
 package no.hvl.dat109.model;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Klassen Utleiekontor
+ * @author - Simen, Rune
+ */
 public class Utleiekontor {
 
     private int kontorid;
@@ -17,14 +22,11 @@ public class Utleiekontor {
     public Utleiekontor() {}
 
     /**
-     * Nytt utleiekontor med liste av biler
-     * @param - kontorid
+     * Nytt utleiekontor med liste av biler og reservasjoner
      * @param - adresse
      * @param - telefonnummer
      * @param - biler
      * @param - reservasjoner
-     * 
-     * @author - Rune, Simen
      */
     public Utleiekontor (Adresse adresse, int telefonnummer, List<Bil> biler, List<Reservasjon> reservasjoner) {
         this.kontorid = ++idCount;
@@ -36,34 +38,27 @@ public class Utleiekontor {
 
     /**
      * Nytt utleiekontor med liste av biler
-     * @param - kontorid
      * @param - adresse
      * @param - telefonnummer
      * @param - biler
-     * @param - reservasjoner
-     * 
-     * @author - Rune, Simen
      */
     public Utleiekontor (Adresse adresse, int telefonnummer, List<Bil> biler) {
         this.kontorid = ++idCount;
         this.adresse = adresse;
         this.telefonnummer = telefonnummer;
         this.biler = biler;
+        this.reservasjoner = new ArrayList<>();
     }
 
     /**
      * Lager en reservasjon og legger til i system.
      */
-    public boolean leggTilReservasjon(Reservasjon reservasjon){
-        boolean ledig = reservasjon.getBil().leggTilReservasjon(reservasjon);
-        if (ledig) {
+    public void leggTilReservasjon(Reservasjon reservasjon){
             reservasjoner.add(reservasjon);
-        }
-        return ledig;
     }
 
     /**
-     * Fjerner reservasjon og setter bil til ledig. (Skal det være Bil bil, istedet for regNr?)
+     * Fjerner reservasjon og setter bil til ledig.
      * @param - reservasjon
      */
     public void returnereBilTilKontor(Reservasjon reservasjon) {
@@ -72,25 +67,8 @@ public class Utleiekontor {
             .collect(Collectors.toList());
     }
 
-
     /**
-     * Gir bruker/kunde en kvittering for leie av bil.
-     */
-    public String leieKvittering() {
-        String leier = "Du leier bil";
-        return leier;
-    }
-
-    /**
-     * Gir bruker/kunde kvittering for returnering av bil.
-     */
-    public String returnerKvittering() {
-        String returnert = "Du har levert bil";
-        return returnert;
-    }
-
-    /**
-     * Leter etter en bil. 
+     * Leter etter en bil og om den er ledig i perioden start til slutt. 
      * @return - ledigeBilerFraValgtGruppe 
      */
     public List<Bil> sokEtterBil(Utleiegruppe utleiegruppe, LocalDateTime startUtleie, LocalDateTime sluttUtleie) {
@@ -99,6 +77,10 @@ public class Utleiekontor {
                                                    .filter(b -> b.erLedig(startUtleie, sluttUtleie))
                                                    .collect(Collectors.toList());
         return ledigeBilerFraValgtGruppe;
+    }
+
+    public void returKvittering() {
+        System.out.println("\nBil er returnert");
     }
 
     public int getKontorid() {

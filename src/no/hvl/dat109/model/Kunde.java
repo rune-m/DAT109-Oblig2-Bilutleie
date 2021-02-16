@@ -1,5 +1,10 @@
 package no.hvl.dat109.model;
 
+
+/**
+ * Klassen kunde
+ * @author Simen, Rune
+ */
 public class Kunde {
 
 	private String fornavn;
@@ -9,7 +14,7 @@ public class Kunde {
 	private Reservasjon reservasjon;
 
 	/**
-	 * Ny kunde
+	 * Definerer en kunde uten reservasjon.
 	 * 
 	 * @param fornavn
 	 * @param etternavn
@@ -24,7 +29,7 @@ public class Kunde {
 	}
 
 	/**
-	 * Ny kunde + reservasjon
+	 * Definerer en kunde med reservasjon
 	 * 
 	 * @param fornavn
 	 * @param etternavn
@@ -83,5 +88,12 @@ public class Kunde {
 	public void setReservasjon(Reservasjon reservasjon) {
 		this.reservasjon = reservasjon;
 	}
+
+	@Override
+	public String toString() {
+		return etternavn + ", " + fornavn + " - Tlf - " + tlf  + " - Adresse - " + adresse;
+	}
+
+	
 
 }

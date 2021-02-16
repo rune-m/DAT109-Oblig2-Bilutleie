@@ -1,8 +1,6 @@
 package no.hvl.dat109.controller;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,7 +12,12 @@ import no.hvl.dat109.model.Kunde;
 import no.hvl.dat109.model.Reservasjon;
 import no.hvl.dat109.model.Utleiegruppe;
 import no.hvl.dat109.model.Utleiekontor;
+import no.hvl.dat109.utils.Utility;
 
+/**
+ * Controller-klasse for kommunikasjon mellom model og view
+ * @author Simen og Rune
+ */
 public class Controller {
 
   private Bilutleieselskap bilutleieselskap;
@@ -26,6 +29,14 @@ public class Controller {
   public Controller() {
   }
 
+  /**
+   * Lag ny kunde og legg til i bilutleieselskapet
+   * @param fornavn
+   * @param etternavn
+   * @param adresse
+   * @param tlf
+   * @return
+   */
   public Kunde nyKunde(String fornavn, String etternavn, Adresse adresse, int tlf) {
     Kunde kunde = new Kunde(fornavn, etternavn, adresse, tlf);
     bilutleieselskap.leggTilKunde(kunde);
@@ -94,8 +105,8 @@ public class Controller {
    * @param regNr
    * @return
    */
-  public Bil velgBil(Utleiekontor kontor, String regNr) {
-    return kontor.getBiler().stream().filter(b -> b.getRegNr() == regNr).findAny().orElse(null);
+  public Bil velgBil(Utleiekontor kontor, int id) {
+    return kontor.getBiler().stream().filter(b -> b.getId() == id).findAny().orElse(null);
   }
 
   /**
@@ -111,12 +122,19 @@ public class Controller {
   public Reservasjon leieBil(Utleiekontor kontor, Bil bil, Kunde kunde, LocalDateTime startUtleie, LocalDateTime sluttUtleie, String kredittkortNr) {
     Reservasjon reservasjon = new Reservasjon(kredittkortNr, startUtleie, sluttUtleie, kunde, bil);
 
-    kontor.leggTilReservasjon(reservasjon);
-    bil.leggTilReservasjon(reservasjon);
-    kunde.setReservasjon(reservasjon);
+    sluttUtleie = Utility.formatterSluttdato(sluttUtleie);
+    reservasjon.setSluttUtleie(sluttUtleie);
 
-    return reservasjon;
-
+    if (bil.erLedig(startUtleie, sluttUtleie)) {
+      kontor.leggTilReservasjon(reservasjon);
+      bil.leggTilReservasjon(reservasjon);
+      kunde.setReservasjon(reservasjon);
+      return reservasjon;
+    } else {
+      System.out.println("Haha, bilen er ikke ledig!");
+      return null;
+    }
+    
   }
 
   /**
@@ -137,50 +155,13 @@ public class Controller {
   public String returnerBil(int reservasjonId, Utleiekontor kontor) {
     Reservasjon reservasjon = kontor.getReservasjoner().stream().filter(r -> r.getReservasjonId() == reservasjonId).findAny().orElse(null);
 
-    reservasjon.getKunde().fjernReservasjon();
-    reservasjon.getBil().fjernReservasjon(reservasjon);
-    kontor.returnereBilTilKontor(reservasjon);
-
-    return kvitteringForLeie(reservasjon);
-  }
-
-  /**
-   * Parse en dato (String) til et LocalDateTime-objekt
-   * @param dato
-   * @return LocalDateTime ved korrekt input, evt. null
-   */
-  public LocalDateTime parseDato(String dato) {
-    // TODO sjekke at alle tallene har to siffer?
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
-    LocalDateTime dateTime = null;
-    dato += " 00:00";
-    try {
-      dateTime = LocalDateTime.parse(dato, formatter);
-    } catch (DateTimeParseException e) {
-      System.out.println("Feil format");
-      return null;
+    if (reservasjon != null) {
+      reservasjon.getKunde().fjernReservasjon();
+      reservasjon.getBil().fjernReservasjon(reservasjon);
+      kontor.returnereBilTilKontor(reservasjon);
+      return kvitteringForLeie(reservasjon);
     }
-    return dateTime;
+    return "";
   }
-
-  
-  
-  
-  // Lager new kunde -> Returnerer kunde-obj
-  // kunde velge utleikontor - utleiekontor.listeAvKontorer
-  // Kunde som velger utleiegruppe
-  // utleiekontoret har list<bil> biler - sokEtterBil(Utleiegruppe, tid)
-  // returner en liste over tilgjengelige biler i utleiegruppe og tid.
-  // kunde velger bil 
-  // kredittkortinformasjon fra kunde
-  // leieBil(bil, kunde, tidsrom) - ny reservasjon Reservasjon(int reservasjonId, int kredittkortNr, int registreringsnummer, 
-  //  LocalDateTime startUtleie, LocalDateTime sluttUtleie, Kunde kunde, Bil bil)
-  // leieKvittering()
-
-  // retur
-  // velger kontor
-  // skriver reservasjonsId
-  // søker i alle reservasjoner
-  // fjerner reservasjonen om den finnes i alle klasser (kunde, kontor, bil)
 
 }

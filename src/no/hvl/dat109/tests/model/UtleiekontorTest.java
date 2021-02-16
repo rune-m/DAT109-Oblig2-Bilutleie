@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 import no.hvl.dat109.controller.Controller;
 import no.hvl.dat109.model.*;
+import no.hvl.dat109.utils.Utility;
 
 public class UtleiekontorTest {
 
@@ -30,14 +31,14 @@ public class UtleiekontorTest {
 
 		Kunde kunde = new Kunde("S", "R", new Adresse("H 12", 3214, "Tubbe"), 12345678);
 
-		Reservasjon reservasjon1 = new Reservasjon("123", controller.parseDato("10.02.2021"),
-				controller.parseDato("15.02.2021"), kunde, bil1);
-		Reservasjon reservasjon2 = new Reservasjon("123", controller.parseDato("13.02.2021"),
-				controller.parseDato("16.02.2021"), kunde, bil2);
-		Reservasjon reservasjon3 = new Reservasjon("123", controller.parseDato("25.02.2021"),
-				controller.parseDato("27.02.2021"), kunde, bil3);
-		Reservasjon reservasjon4 = new Reservasjon("123", controller.parseDato("17.02.2021"),
-				controller.parseDato("23.02.2021"), kunde, bil1);
+		Reservasjon reservasjon1 = new Reservasjon("123", Utility.parseDato("10.02.2021"),
+				Utility.parseDato("15.02.2021"), kunde, bil1);
+		Reservasjon reservasjon2 = new Reservasjon("123", Utility.parseDato("13.02.2021"),
+				Utility.parseDato("16.02.2021"), kunde, bil2);
+		Reservasjon reservasjon3 = new Reservasjon("123", Utility.parseDato("25.02.2021"),
+				Utility.parseDato("27.02.2021"), kunde, bil3);
+		Reservasjon reservasjon4 = new Reservasjon("123", Utility.parseDato("17.02.2021"),
+				Utility.parseDato("23.02.2021"), kunde, bil1);
 
 		bil1.leggTilReservasjon(reservasjon1);
 		bil2.leggTilReservasjon(reservasjon2);
@@ -53,20 +54,20 @@ public class UtleiekontorTest {
 
 	@Test
 	public void sokEtterBilerOgFaarRetur() {
-		List<Bil> utleiegruppeBiler = kontor.sokEtterBil(Utleiegruppe.STOR, controller.parseDato("01.01.2021"),
-				controller.parseDato("05.01.2021"));
+		List<Bil> utleiegruppeBiler = kontor.sokEtterBil(Utleiegruppe.STOR, Utility.parseDato("01.01.2021"),
+				Utility.parseDato("05.01.2021"));
 		assertTrue(!utleiegruppeBiler.isEmpty());
 	}
 
   @Test
   public void sokEtterStorBilOgDenErLedig() {
-    List<Bil> biler = kontor.sokEtterBil(Utleiegruppe.STOR, controller.parseDato("01.01.2021"), controller.parseDato("03.01.2021"));
+    List<Bil> biler = kontor.sokEtterBil(Utleiegruppe.STOR, Utility.parseDato("01.01.2021"), Utility.parseDato("03.01.2021"));
     assertTrue(biler.size() == 1 && biler.get(0).equals(biler.get(0)));
   }
 
   @Test
   public void sokEtterStorBilOgDenErIkkeLedig() {
-      List<Bil> biler = kontor.sokEtterBil(Utleiegruppe.STOR, controller.parseDato("25.02.2021"), controller.parseDato("26.02.2021"));
+      List<Bil> biler = kontor.sokEtterBil(Utleiegruppe.STOR, Utility.parseDato("25.02.2021"), Utility.parseDato("26.02.2021"));
       assertTrue(biler.size() == 0);
   }
 

@@ -4,8 +4,15 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import no.hvl.dat109.utils.Utility;
+
+/**
+ * Klassen Bil
+ * @author Rune, Simen
+ */
 public class Bil {
 
+	private int id;
 	private String regNr;
 	private String merke;
 	private String modell;
@@ -14,7 +21,21 @@ public class Bil {
 	private Utleiegruppe utleiegruppe;
 	private List<Reservasjon> reservasjoner;
 
+	private static int idCount = 0;
+
+
+	/**
+	 * Definerer en bil.
+	 * 
+	 * @param regNr
+	 * @param merke
+	 * @param modell
+	 * @param farge
+	 * @param kmStand
+	 * @param utleiegruppe
+	 */
 	public Bil(String regNr, String merke, String modell, String farge, int kmStand, Utleiegruppe utleiegruppe) {
+		this.id = ++idCount;
 		this.regNr = regNr;
 		this.merke = merke;
 		this.modell = modell;
@@ -25,7 +46,7 @@ public class Bil {
 	};
 
 	/**
-	 * Sjekk om Bil er ledig på gitte tidspunkt
+	 * Sjekk om Bil er ledig ved et gitt tidspunkt.
 	 * 
 	 * @param startDato startdato for søk
 	 * @param sluttDato sluttdato for søk
@@ -33,17 +54,12 @@ public class Bil {
 	 */
 	public boolean erLedig(LocalDateTime startDato, LocalDateTime sluttDato) {
 
-		// for (Reservasjon r : reservasjoner) {
-		// 	if (startDato.compareTo(r.getStartUtleie()) > 0 && startDato.compareTo(r.getSluttUtleie()) < 0) {
-		// 		return false;
-		// 	} else if (sluttDato.compareTo(r.getStartUtleie()) > 0 && sluttDato.compareTo(r.getSluttUtleie()) < 0) {
-		// 		return false;
-		// 	}
-		// }
 		for (Reservasjon r : reservasjoner) {
 			if (startDato.isAfter(r.getStartUtleie()) && startDato.isBefore(r.getSluttUtleie())) {
 				return false;
 			} else if (sluttDato.isAfter(r.getStartUtleie()) && sluttDato.isBefore(r.getSluttUtleie())) {
+				return false;
+			} else if (startDato.isBefore(r.getStartUtleie()) && sluttDato.isAfter(r.getSluttUtleie())) {
 				return false;
 			}
 		}
@@ -56,12 +72,8 @@ public class Bil {
 	 * 
 	 * @param reservasjon
 	 */
-	public boolean leggTilReservasjon(Reservasjon reservasjon) {
-		// if (erLedig(reservasjon.getStartUtleie(), reservasjon.getSluttUtleie())) {
-			reservasjoner.add(reservasjon);
-			return true;
-		// }
-		// return false;
+	public void leggTilReservasjon(Reservasjon reservasjon) {
+		reservasjoner.add(reservasjon);
 	}
 
 	/**
@@ -72,6 +84,14 @@ public class Bil {
 	 */
 	public boolean fjernReservasjon(Reservasjon reservasjon) {
 		return reservasjoner.remove(reservasjon);
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public String getRegNr() {
@@ -130,15 +150,9 @@ public class Bil {
 		this.reservasjoner = reservasjoner;
 	}
 
-	// TODO Legge til i utility-klasse?
-	public static String enumToString(Utleiegruppe ug) {
-		String s = ug.toString().toLowerCase();
-		return s.substring(0, 1).toUpperCase();
-	}
-
 	@Override
 	public String toString() {
-		return regNr + " - " + Bil.enumToString(utleiegruppe) + ", " + merke + ", " + modell + ", " + farge + ", " + kmStand;
+		return id + " - " + regNr + " - " + Utility.enumToString(utleiegruppe) + ", " + merke + ", " + modell + ", " + farge + ", " + kmStand;
 	}
 
 }

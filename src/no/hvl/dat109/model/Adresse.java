@@ -1,5 +1,9 @@
 package no.hvl.dat109.model;
 
+/**
+ * Klassen Adresse
+ * @author Rune, Simen
+ */
 public class Adresse {
 
 	private String gateadresse;
@@ -7,12 +11,11 @@ public class Adresse {
 	private String poststed;
 
 	/**
-	 * Ny addresse
+	 * Definerer en adresse.
 	 * 
 	 * @param - gateadresse
 	 * @param - postnummer
 	 * @param - poststed
-	 * @author - Simen, Rune
 	 */
 	public Adresse(String gateadresse, int postnummer, String poststed) {
 		this.gateadresse = gateadresse;
